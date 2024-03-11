@@ -9,6 +9,37 @@ export const Home = () => {
     const [num,setNum] = useState(0);
     const [oldNum,setOldNum] = useState(0);
     const [operator, setOperator] = useState();
+    const [displayCount, setDisplayCount] = useState("");
+
+    // Função que mostra a operação no formato de uma string
+    
+    function display() {
+        let displayText = "";
+    
+        if (operator) {
+            displayText += oldNum + " " + operator + " " ;       
+        }
+        displayText += num;
+        return displayText;
+    };
+
+    function displayH() {
+        let displayHist = display(); 
+        setDisplayCount(displayHist); 
+    };
+    
+    // Função de inserir valores
+    function handlePress(value) {
+        if (num === 0) { 
+            if (value === ".") {
+                setNum("0.");
+            } else {
+                setNum(value);
+            };      
+        } else {
+            setNum( num + value);
+        };
+    };
 
     // Função de operadores
     function operatorHandler(value) {
@@ -17,6 +48,7 @@ export const Home = () => {
         setOldNum(num);
         setNum(0);
     };
+
     // Função de calcular
     function calculate() {
         if (operator === "/") {
@@ -49,27 +81,20 @@ export const Home = () => {
                     setResult(result);
                 };
         };
-        console.log("Calculou!");
+        displayH();   
+    //   setOldNum(0);
+    //   setNum(0); 
+        console.log("Funfou esse corai!");
         console.log(oldNum);
         console.log(operator);
         console.log(num);
+        console.log(displayCount);
     };
     // Função de limpar operação
     function clear() {
         setNum(0);
         setResult(0);
-    };
-    // Função de inserir valores
-    function handlePress(value) {
-        if (num === 0) { 
-            if (value === ".") {
-                setNum("0.");
-            } else {
-                setNum(value);
-            };      
-        } else {
-            setNum( num + value);
-        };
+        setOperator(null);
     };
     // função de porcentagem
     function porcentage() {
@@ -92,14 +117,14 @@ export const Home = () => {
                     <Text style={styles.textResults}>{result} </Text>
                 </View>
                 <View style={styles.operation}>
-                    <Text style={styles.textOperation}>{num}</Text>
+                <Text style={styles.textOperation}>{display()}</Text>
                 </View>
                 <View style={styles.history}>
                     <View style={styles.textHistory}>
                         <Text style={styles.textInternHistory}>History</Text>
                     </View>
                     <View style={styles.textHistoryOperation}>
-                        <Text style={styles.textInternHistory}>56 + 768</Text>
+                        <Text style={styles.textInternHistory}>{displayCount}</Text>
                     </View>
                 </View>
             </View>
