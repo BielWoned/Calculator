@@ -1,28 +1,95 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { InsertButton, InsertSpecialButton } from "../../componentes/buttons";
 
 
 export const Home = () => {
 
-    const [result,setNum] = useState(0);
-    const [num,serNum] = useState(0);
+    const [result,setResult] = useState(0); 
+    const [num,setNum] = useState(0);
+    const [oldNum,setOldNum] = useState(0);
+    const [operator, setOperator] = useState();
 
+    // Função de operadores
+    function operatorHandler(value) {
+        let operatorInput = value;
+        setOperator(operatorInput);
+        setOldNum(num);
+        setNum(0);
+    };
+    // Função de calcular
+    function calculate() {
+        if (operator === "/") {
+            let result = oldNum/num;
+                if (result % 1!== 0) {                    
+                    setResult(result.toFixed(3))
+                } else {
+                    setResult(result);
+                };
+              
+        } else if (operator === "x") {
+            let result = oldNum*num;
+                if (result % 1!== 0) {                    
+                    setResult(result.toFixed(3))
+                } else {
+                    setResult(result);
+                };
+        } else if (operator === "-") {
+            let result = oldNum-num;
+                if (result % 1!== 0) {                    
+                    setResult(result.toFixed(3))
+                } else {
+                    setResult(result);
+                };
+        } else if (operator === "+") {
+            let result = parseFloat(oldNum)+parseFloat(num);
+                if (result % 1!== 0) {                    
+                    setResult(result.toFixed(3))
+                } else {
+                    setResult(result);
+                };
+        };
+        console.log("Calculou!");
+        console.log(oldNum);
+        console.log(operator);
+        console.log(num);
+    };
     // Função de limpar operação
     function clear() {
-        setNum(0)
+        setNum(0);
+        setResult(0);
     };
+    // Função de inserir valores
     function handlePress(value) {
-        setNum(num + value);
+        if (num === 0) { 
+            if (value === ".") {
+                setNum("0.");
+            } else {
+                setNum(value);
+            };      
+        } else {
+            setNum( num + value);
+        };
+    };
+    // função de porcentagem
+    function porcentage() {
+        setNum((num / 100));
+    };
+    // Função de mudar sinal
+    function signHandler() {
+            setNum(-num);
     };
 
     return (
         <View style={styles.container}>
+
             <View style={styles.showScreen}>
                 <View style={styles.header}>
-                    <Text style={styles.textHeader}>Calculator</Text>
+                    <Text style={styles.textHeader}>Calculator </Text>
+                    
                 </View>
                 <View style={styles.results}>
-                    <Text style={styles.textResults}>{result}</Text>
+                    <Text style={styles.textResults}>{result} </Text>
                 </View>
                 <View style={styles.operation}>
                     <Text style={styles.textOperation}>{num}</Text>
@@ -38,66 +105,28 @@ export const Home = () => {
             </View>
 
             <View style={styles.operatorContainer}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={[styles.textButton, styles.specialTextButton]} onPress={() => clear()}>C</Text>
-                </TouchableOpacity>
+                <InsertSpecialButton text="C" onPress={clear}/>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.textButton}>()</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>%</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>/</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("7")}>
-                    <Text style={styles.textButton}>7</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("8")}>
-                    <Text style={styles.textButton}>8</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("9")}>
-                    <Text style={styles.textButton}>9</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>x</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("4")}>
-                    <Text style={styles.textButton}>4</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("5")}>
-                    <Text style={styles.textButton}>5</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("6")}>
-                    <Text style={styles.textButton}>6</Text >
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>-</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("1")}>
-                    <Text style={styles.textButton}>1</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("2")}>
-                    <Text style={styles.textButton}>2</Text>
-                </TouchableOpacity>                                           
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("3")}>
-                    <Text style={styles.textButton}>3</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>+</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>+/-</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handlePress("0")}>
-                    <Text style={styles.textButton}>0</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>.</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={[styles.textButton, styles.specialTextButton]}>=</Text>
-                </TouchableOpacity>
+                <InsertButton text="%" onPress={porcentage}/>
+                <InsertButton text="/" onPress={operatorHandler}/>
+                <InsertButton text="7" onPress={handlePress}/>
+                <InsertButton text="8" onPress={handlePress}/>
+                <InsertButton text="9" onPress={handlePress}/>          
+                <InsertButton text="x" onPress={operatorHandler}/>
+                <InsertButton text="4" onPress={handlePress}/>
+                <InsertButton text="5" onPress={handlePress}/>
+                <InsertButton text="6" onPress={handlePress}/>
+                <InsertButton text="-" onPress={operatorHandler}/>
+                <InsertButton text="1" onPress={handlePress}/>
+                <InsertButton text="2" onPress={handlePress}/>
+                <InsertButton text="3" onPress={handlePress}/>
+                <InsertButton text="+" onPress={operatorHandler}/>         
+                <InsertButton text="+/-" onPress={signHandler}/>
+                <InsertButton text="0" onPress={handlePress}/>
+                <InsertButton text="." onPress={handlePress}/>
+                <InsertButton text="=" onPress={calculate}/>
                            
                     
                 
@@ -196,7 +225,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: "25%",
-        height: 100,
+        height: 96,
         marginBottom: 4,
         borderStyle: "solid",
         borderColor: "#FFFFFF",
@@ -207,8 +236,5 @@ const styles = StyleSheet.create({
         fontSize: 32,
     },
 
-    specialTextButton: {
-        color: "#FF6944",
-        fontSize: 40,
-    },
+
 });
