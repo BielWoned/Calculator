@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { InsertButton, InsertSpecialButton } from "../../componentes/buttons";
-
+import { Container, ShowScreen, Header, TextHeader, Results, TextResults, Operation, TextOperation, History, TextHistory, TextInternHistory, TextHistoryOperation, OperatorContainer } from "../../styled";
 
 export const Home = () => {
 
@@ -43,8 +42,7 @@ export const Home = () => {
 
     // Função de operadores
     function operatorHandler(value) {
-        let operatorInput = value;
-        setOperator(operatorInput);
+        setOperator(value);
         setOldNum(num);
         setNum(0);
     };
@@ -82,13 +80,6 @@ export const Home = () => {
                 };
         };
         displayH();   
-    //   setOldNum(0);
-    //   setNum(0); 
-        console.log("Funfou esse corai!");
-        console.log(oldNum);
-        console.log(operator);
-        console.log(num);
-        console.log(displayCount);
     };
     // Função de limpar operação
     function clear() {
@@ -106,34 +97,31 @@ export const Home = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <Container>
 
-            <View style={styles.showScreen}>
-                <View style={styles.header}>
-                    <Text style={styles.textHeader}>Calculator </Text>
-                    
-                </View>
-                <View style={styles.results}>
-                    <Text style={styles.textResults}>{result} </Text>
-                </View>
-                <View style={styles.operation}>
-                <Text style={styles.textOperation}>{display()}</Text>
-                </View>
-                <View style={styles.history}>
-                    <View style={styles.textHistory}>
-                        <Text style={styles.textInternHistory}>History</Text>
-                    </View>
-                    <View style={styles.textHistoryOperation}>
-                        <Text style={styles.textInternHistory}>{displayCount}</Text>
-                    </View>
-                </View>
-            </View>
+            <ShowScreen>
+                <Header>
+                    <TextHeader>Calculator</TextHeader>                    
+                </Header>
+                <Results>
+                    <TextResults>{result}</TextResults>
+                </Results>
+                <Operation>
+                    <TextOperation>{display()}</TextOperation>
+                </Operation>
+                <History>
+                    <TextHistory>
+                        <TextInternHistory>History</TextInternHistory>
+                    </TextHistory>
+                    <TextHistoryOperation>
+                        <TextInternHistory>{displayCount}</TextInternHistory>
+                    </TextHistoryOperation>
+                </History>
+            </ShowScreen>
 
-            <View style={styles.operatorContainer}>
+            <OperatorContainer>
                 <InsertSpecialButton text="C" onPress={clear}/>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.textButton}>()</Text>
-                </TouchableOpacity>
+                <InsertButton text="()" onPress={handlePress}/> 
                 <InsertButton text="%" onPress={porcentage}/>
                 <InsertButton text="/" onPress={operatorHandler}/>
                 <InsertButton text="7" onPress={handlePress}/>
@@ -155,111 +143,9 @@ export const Home = () => {
                            
                     
                 
-            </View>
-        </View>
+            </OperatorContainer>
+        </Container>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#FAFAFA",
-    },
 
-    showScreen:{
-        
-        width: '100%',
-        backgroundColor: "#FF6944",
-    },
-
-    header: {
-        width: '100%',
-        marginTop: 70,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    textHeader: {
-        fontSize: 20,
-        color: "#FAFAFA",
-    },  
-
-    results: {
-        width: "100%",
-        marginTop: 32,
-        paddingRight: 40,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        
-    },
-
-    textResults: {
-        fontSize: 60,
-        color: "#FAFAFA",
-        fontWeight: "bold",
-         
-    },
-
-    operation: {
-        width: "100%",
-        justifyContent: "flex-end",
-        flexDirection: "row",
-        paddingRight: 40,
-    },
-
-    textOperation: {
-        fontSize: 20,
-        color: "#FAFAFA",
-    },      
-
-    history: {
-        flexDirection: "row",
-        marginTop: 16,
-        marginBottom: 16,
-    },
-
-    textHistory: {
-        width: "50%",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        paddingLeft: 36,
-    },
-
-    textHistoryOperation: {
-        width: "50%",
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        paddingRight: 36,
-    },
-
-    textInternHistory: {
-        color: "#FAFAFA",
-        fontSize: 16,
-    },
-
-    operatorContainer: {
-        flex: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 10,
-        
-        
-    },
-
-    button: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: "25%",
-        height: 96,
-        marginBottom: 4,
-        borderStyle: "solid",
-        borderColor: "#FFFFFF",
-        borderWidth: 0.25,
-    },
-
-    textButton: {
-        fontSize: 32,
-    },
-
-
-});
